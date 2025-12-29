@@ -52,9 +52,9 @@ dependencies:
   uuid: ^4.2.1
 
   # Analytics (optional)
-  firebase_core: ^2.24.2
-  firebase_analytics: ^10.7.4
-  firebase_crashlytics: ^3.4.9
+  firebase_core: ^4.3.0
+  firebase_analytics: ^12.1.0
+  firebase_crashlytics: ^5.0.6
 
   # Localization
   flutter_gen: ^5.3.2
