@@ -1,0 +1,102 @@
+name: quran_azkar_app
+description: A comprehensive Quran reading and Azkar mobile application for iOS and Android
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Database
+  sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.0  # For desktop/web compatibility
+  path: ^1.8.3
+  drift: ^2.14.1  # Cross-platform database (works on web)
+  drift_web: ^2.0.0  # Web support for drift
+  sqlite3_flutter_libs: ^0.5.18  # SQLite for mobile
+
+  # Network
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+
+  # Audio
+  just_audio: ^0.9.36
+  audio_service: ^0.18.10
+  # Note: audio_service may have limited web support
+
+  # Notifications
+  flutter_local_notifications: ^16.3.0
+  timezone: ^0.9.2
+  # Note: notifications have limited web support
+
+  # Storage
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.1
+  universal_html: ^2.2.4  # For web platform detection
+
+  # UI
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0
+  pull_to_refresh: ^2.0.0
+
+  # Utils
+  intl: ^0.18.1
+  equatable: ^2.0.5
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  uuid: ^4.2.1
+
+  # Analytics (optional)
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.7.4
+  firebase_crashlytics: ^3.4.9
+
+  # Localization
+  flutter_gen: ^5.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  
+  # Code Generation
+  build_runner: ^2.4.7
+  freezed: ^2.4.6
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.3.9
+  drift_dev: ^2.14.1  # For drift code generation
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    - assets/data/
+
+  fonts:
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri-Regular.ttf
+        - asset: assets/fonts/Amiri-Bold.ttf
+          weight: 700
+
+flutter_intl:
+  enabled: true
+  class_name: S
+  main_locale: en
+  arb_dir: lib/l10n
+  output_dir: lib/generated
+
