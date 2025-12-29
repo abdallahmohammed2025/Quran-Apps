@@ -60,6 +60,23 @@ class QuranText {
       meccan: (map['meccan'] as int? ?? 0) == 1,
     );
   }
+
+  factory QuranText.fromJson(Map<String, dynamic> json) {
+    return QuranText(
+      ayahId: json['ayah_id'] as String? ?? '${json['surah_number']}-${json['ayah_number']}',
+      surahNumber: json['surah_number'] as int,
+      ayahNumber: json['ayah_number'] as int,
+      text: json['text'] as String,
+      pageNumber: json['page_number'] as int?,
+      juzNumber: json['juz_number'] as int?,
+      hizbNumber: json['hizb_number'] as int?,
+      rubNumber: json['rub_number'] as int?,
+      rukuNumber: json['ruku_number'] as int?,
+      sajdahMarker: (json['sajdah_marker'] as int? ?? 0) == 1,
+      bismillah: (json['bismillah'] as int? ?? 0) == 1,
+      meccan: (json['meccan'] as int? ?? 0) == 1,
+    );
+  }
 }
 
 class Surah {

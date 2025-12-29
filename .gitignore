@@ -69,3 +69,12 @@ coverage/
 # MacOS
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 
+# Logs
+*.log
+flutter_*.log
+
+# CI/CD artifacts (keep workflows, ignore build outputs)
+build/
+*.apk
+*.aab
+*.ipa

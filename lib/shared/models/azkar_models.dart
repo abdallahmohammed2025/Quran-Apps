@@ -41,9 +41,28 @@ class AzkarCategory {
       icon: map['icon'] as String?,
       color: map['color'] as String?,
       timeTags: map['time_tags'] != null
-          ? (map['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList()
+          ? (map['time_tags'] is String
+              ? (map['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList()
+              : (map['time_tags'] as List).map((e) => e.toString()).toList())
           : [],
       displayOrder: map['display_order'] as int? ?? 0,
+    );
+  }
+
+  factory AzkarCategory.fromJson(Map<String, dynamic> json) {
+    return AzkarCategory(
+      categoryId: json['category_id'] as String,
+      name: json['name'] as String,
+      nameTransliterated: json['name_transliterated'] as String?,
+      description: json['description'] as String?,
+      icon: json['icon'] as String?,
+      color: json['color'] as String?,
+      timeTags: json['time_tags'] != null
+          ? (json['time_tags'] is List
+              ? (json['time_tags'] as List).map((e) => e.toString()).toList()
+              : (json['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList())
+          : [],
+      displayOrder: json['display_order'] as int? ?? 0,
     );
   }
 }
@@ -106,10 +125,33 @@ class AzkarItem {
       repeatCount: map['repeat_count'] as int? ?? 1,
       virtues: map['virtues'] as String?,
       timeTags: map['time_tags'] != null
-          ? (map['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList()
+          ? (map['time_tags'] is String
+              ? (map['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList()
+              : (map['time_tags'] as List).map((e) => e.toString()).toList())
           : [],
       displayOrder: map['display_order'] as int? ?? 0,
       isFavorite: (map['is_favorite'] as int? ?? 0) == 1,
+    );
+  }
+
+  factory AzkarItem.fromJson(Map<String, dynamic> json) {
+    return AzkarItem(
+      azkarId: json['azkar_id'] as String,
+      categoryId: json['category_id'] as String,
+      arabicText: json['arabic_text'] as String,
+      transliteration: json['transliteration'] as String?,
+      translation: json['translation'] as String?,
+      source: json['source'] as String?,
+      reference: json['reference'] as String?,
+      repeatCount: json['repeat_count'] as int? ?? 1,
+      virtues: json['virtues'] as String?,
+      timeTags: json['time_tags'] != null
+          ? (json['time_tags'] is List
+              ? (json['time_tags'] as List).map((e) => e.toString()).toList()
+              : (json['time_tags'] as String).split(',').where((s) => s.isNotEmpty).toList())
+          : [],
+      displayOrder: json['display_order'] as int? ?? 0,
+      isFavorite: (json['is_favorite'] as int? ?? 0) == 1,
     );
   }
 }
