@@ -34,7 +34,6 @@ class AppTheme {
         secondary: secondaryColor,
         error: errorColor,
         surface: surfaceColor,
-        background: backgroundColor,
       ),
       scaffoldBackgroundColor: backgroundColor,
       appBarTheme: const AppBarTheme(
@@ -115,7 +114,6 @@ class AppTheme {
         secondary: accentColor,
         error: errorColor,
         surface: darkSurfaceColor,
-        background: darkBackgroundColor,
       ),
       scaffoldBackgroundColor: darkBackgroundColor,
       appBarTheme: const AppBarTheme(
@@ -193,7 +191,6 @@ class AppTheme {
       cardColor: const Color(0xFFF9F1E0),
       colorScheme: lightTheme.colorScheme.copyWith(
         surface: const Color(0xFFF9F1E0),
-        background: const Color(0xFFF4E4BC),
       ),
     );
   }

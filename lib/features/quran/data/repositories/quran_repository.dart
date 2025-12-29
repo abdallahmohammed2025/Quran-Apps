@@ -1,4 +1,3 @@
-import 'package:quran_azkar_app/core/database/app_database.dart';
 import 'package:quran_azkar_app/core/database/database_interface.dart';
 import 'package:quran_azkar_app/shared/models/quran_models.dart';
 

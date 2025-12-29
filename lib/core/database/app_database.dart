@@ -24,9 +24,7 @@ class AppDatabase {
       return _webDatabase!;
     } else {
       // Mobile: return SQLite database wrapped in adapter
-      if (_database == null) {
-        _database = await _initDatabase();
-      }
+      _database ??= await _initDatabase();
       return MobileDatabaseAdapter(_database!);
     }
   }
@@ -36,9 +34,7 @@ class AppDatabase {
     if (PlatformInfo.isWeb) {
       throw UnsupportedError('SQLite not available on web. Use instance instead.');
     }
-    if (_database == null) {
-      _database = await _initDatabase();
-    }
+    _database ??= await _initDatabase();
     return _database!;
   }
   

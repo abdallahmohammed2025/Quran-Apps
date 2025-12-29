@@ -42,8 +42,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> _completeOnboarding() async {
-    final prefs = await PreferencesHelper.instance;
-    
     // Save preferences
     if (_selectedLanguage != null) {
       await PreferencesHelper.setLanguage(_selectedLanguage!);
@@ -181,7 +179,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
           borderRadius: BorderRadius.circular(8),
           color: isSelected
-              ? Theme.of(context).primaryColor.withOpacity(0.1)
+              ? Theme.of(context).primaryColor.withAlpha(26)
               : null,
         ),
         child: Row(
@@ -275,7 +273,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
           borderRadius: BorderRadius.circular(8),
           color: isSelected
-              ? Theme.of(context).primaryColor.withOpacity(0.1)
+              ? Theme.of(context).primaryColor.withAlpha(26)
               : null,
         ),
         child: Text(label),

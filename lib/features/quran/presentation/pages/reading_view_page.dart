@@ -118,7 +118,7 @@ class _AyahWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withAlpha(26),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -134,7 +134,7 @@ class _AyahWidget extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.1),
+                        color: Colors.orange.withAlpha(26),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: const Text(
