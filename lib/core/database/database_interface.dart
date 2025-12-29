@@ -14,7 +14,7 @@ abstract class DatabaseInterface {
     int? limit,
     int? offset,
   });
-  Future<int> insert(String table, Map<String, dynamic> values);
+  Future<int> insert(String table, Map<String, dynamic> values, {String? conflictAlgorithm});
   Future<int> update(
     String table,
     Map<String, dynamic> values, {
@@ -29,5 +29,6 @@ abstract class DatabaseInterface {
   Future<void> execute(String sql, [List<Object?>? arguments]);
   Future<List<Map<String, dynamic>>> rawQuery(String sql, [List<Object?>? arguments]);
   Future<void> close();
+  Future<void> batchInsert(String table, List<Map<String, dynamic>> values, {String? conflictAlgorithm});
 }
 

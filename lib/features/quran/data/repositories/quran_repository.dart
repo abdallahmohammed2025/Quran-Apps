@@ -93,21 +93,18 @@ class QuranRepositoryImpl implements QuranRepository {
     await _database.insert(
       'quran_text',
       ayah.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: 'replace',
     );
   }
 
   @override
   Future<void> insertQuranTexts(List<QuranText> ayahs) async {
-    final batch = _database.batch();
-    for (final ayah in ayahs) {
-      batch.insert(
-        'quran_text',
-        ayah.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-    await batch.commit(noResult: true);
+    final values = ayahs.map((ayah) => ayah.toMap()).toList();
+    await _database.batchInsert(
+      'quran_text',
+      values,
+      conflictAlgorithm: 'replace',
+    );
   }
 
   // Helper methods for surah names (simplified - should come from database)

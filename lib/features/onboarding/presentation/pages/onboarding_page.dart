@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran_azkar_app/core/utils/preferences_helper.dart';
+import 'package:quran_azkar_app/features/home/presentation/pages/home_page.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -350,7 +351,4 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 }
-
-// Temporary import - will be created next
-import 'package:quran_azkar_app/features/home/presentation/pages/home_page.dart';
 

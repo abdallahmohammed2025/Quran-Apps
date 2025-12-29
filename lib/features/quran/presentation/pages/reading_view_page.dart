@@ -154,7 +154,7 @@ class _AyahWidget extends StatelessWidget {
                 ayah.text,
                 style: const TextStyle(
                   fontSize: 24,
-                  fontFamily: 'Amiri',
+                  // fontFamily: 'Amiri', // Uncomment when font is added
                   height: 2.0,
                 ),
                 textDirection: TextDirection.rtl,

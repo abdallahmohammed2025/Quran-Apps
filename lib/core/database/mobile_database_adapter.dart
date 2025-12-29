@@ -40,8 +40,32 @@ class MobileDatabaseAdapter implements DatabaseInterface {
   }
 
   @override
-  Future<int> insert(String table, Map<String, dynamic> values) async {
+  Future<int> insert(String table, Map<String, dynamic> values, {String? conflictAlgorithm}) async {
+    if (conflictAlgorithm == 'replace') {
+      return await _database.insert(
+        table,
+        values,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
     return await _database.insert(table, values);
+  }
+  
+  @override
+  Future<void> batchInsert(String table, List<Map<String, dynamic>> values, {String? conflictAlgorithm}) async {
+    final batch = _database.batch();
+    for (final value in values) {
+      if (conflictAlgorithm == 'replace') {
+        batch.insert(
+          table,
+          value,
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      } else {
+        batch.insert(table, value);
+      }
+    }
+    await batch.commit(noResult: true);
   }
 
   @override
@@ -79,9 +103,9 @@ class MobileDatabaseAdapter implements DatabaseInterface {
 
   @override
   Future<List<Map<String, dynamic>>> rawQuery(
-    String sql,
-    [List<Object?>? arguments],
-  ) async {
+    String sql, [
+    List<Object?>? arguments,
+  ]) async {
     return await _database.rawQuery(sql, arguments);
   }
 

@@ -41,7 +41,7 @@ class QuranAzkarApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    final isOnboardingComplete = ref.watch(onboardingCompleteProvider);
+    final isOnboardingCompleteAsync = ref.watch(onboardingCompleteProvider);
     
     return MaterialApp(
       title: 'Quran & Azkar',
@@ -54,9 +54,15 @@ class QuranAzkarApp extends ConsumerWidget {
         Locale('en'),
         Locale('ar'),
       ],
-      home: isOnboardingComplete
-          ? const HomePage()
-          : const OnboardingPage(),
+      home: isOnboardingCompleteAsync.when(
+        data: (isComplete) => isComplete
+            ? const HomePage()
+            : const OnboardingPage(),
+        loading: () => const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+        error: (error, stack) => const OnboardingPage(),
+      ),
     );
   }
 }

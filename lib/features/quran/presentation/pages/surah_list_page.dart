@@ -101,7 +101,7 @@ class _SurahListItem extends StatelessWidget {
             surah.nameArabic,
             style: const TextStyle(
               fontSize: 20,
-              fontFamily: 'Amiri',
+              // fontFamily: 'Amiri', // Uncomment when font is added
             ),
             textDirection: TextDirection.rtl,
           ),

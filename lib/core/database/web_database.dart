@@ -151,11 +151,29 @@ class WebDatabase implements DatabaseInterface {
   }
 
   @override
-  Future<int> insert(String table, Map<String, dynamic> values) async {
+  Future<int> insert(String table, Map<String, dynamic> values, {String? conflictAlgorithm}) async {
     _ensureTable(table);
+    // Handle conflict: if conflictAlgorithm is 'replace', update existing
+    if (conflictAlgorithm == 'replace') {
+      final primaryKey = values.keys.first; // Simple assumption
+      final existingIndex = _tables[table]!.indexWhere((row) => row[primaryKey] == values[primaryKey]);
+      if (existingIndex >= 0) {
+        _tables[table]![existingIndex] = Map<String, dynamic>.from(values);
+        await _saveTable(table);
+        return existingIndex;
+      }
+    }
     _tables[table]!.add(Map<String, dynamic>.from(values));
     await _saveTable(table);
     return _tables[table]!.length - 1;
+  }
+  
+  @override
+  Future<void> batchInsert(String table, List<Map<String, dynamic>> values, {String? conflictAlgorithm}) async {
+    _ensureTable(table);
+    for (final value in values) {
+      await insert(table, value, conflictAlgorithm: conflictAlgorithm);
+    }
   }
 
   @override
@@ -221,9 +239,9 @@ class WebDatabase implements DatabaseInterface {
 
   @override
   Future<List<Map<String, dynamic>>> rawQuery(
-    String sql,
-    [List<Object?>? arguments],
-  ) async {
+    String sql, [
+    List<Object?>? arguments,
+  ]) async {
     // For complex queries, parse SQL
     // This is a simplified implementation
     if (sql.toUpperCase().contains('SELECT')) {

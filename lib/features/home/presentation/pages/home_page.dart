@@ -189,7 +189,7 @@ class _HomeTab extends ConsumerWidget {
               'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',
               style: TextStyle(
                 fontSize: 24,
-                fontFamily: 'Amiri',
+                // fontFamily: 'Amiri', // Uncomment when font is added
               ),
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.right,
