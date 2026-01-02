@@ -6,6 +6,7 @@ import 'package:quran_azkar_app/features/quran/data/repositories/quran_repositor
 import 'package:quran_azkar_app/shared/models/quran_models.dart';
 import 'package:quran_azkar_app/shared/models/azkar_models.dart';
 import 'package:quran_azkar_app/core/utils/comprehensive_quran_data.dart';
+import 'package:quran_azkar_app/core/utils/quran_api_loader.dart';
 
 /// Content loader for Quran and Azkar data
 /// Loads from JSON files in assets/data/
@@ -15,24 +16,67 @@ class ContentLoader {
     await loadAzkarContent();
   }
 
-  /// Load Quran content from JSON
+  /// Load Quran content from JSON or API
   static Future<void> loadQuranContent() async {
     try {
-      // Load from assets
-      final jsonString = await rootBundle.loadString('assets/data/quran_text.json');
-      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-      final ayahs = (jsonData['ayahs'] as List)
-          .map((item) => QuranText.fromJson(item as Map<String, dynamic>))
-          .toList();
-
+      // First, check if we already have full content
       final database = await AppDatabase.instance;
       final repository = QuranRepositoryImpl(database);
-      await repository.insertQuranTexts(ayahs);
+      final existing = await repository.getAllSurahs();
+      
+      // If we have 100+ surahs, assume we have full content
+      if (existing.length >= 100) {
+        debugPrint('Full Quran already loaded (${existing.length} surahs)');
+        return;
+      }
+      
+      // Try loading from JSON file first
+      try {
+        final jsonString = await rootBundle.loadString('assets/data/quran_text.json');
+        final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
+        final ayahs = (jsonData['ayahs'] as List)
+            .map((item) => QuranText.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        await repository.insertQuranTexts(ayahs);
+        debugPrint('Loaded Quran from JSON (${ayahs.length} ayahs)');
+        return;
+      } catch (e) {
+        debugPrint('Quran JSON not found: $e');
+      }
+      
+      // If JSON not found and we don't have full content, try API
+      // Changed threshold to 114 to always try to complete the Quran if we have less than 114 surahs
+      if (existing.isEmpty || existing.length < 114) {
+        debugPrint('Attempting to load full Quran from API (current: ${existing.length} surahs, need 114)...');
+        try {
+          await _loadFullQuranFromAPI(repository);
+          return;
+        } catch (e) {
+          debugPrint('API load failed: $e');
+          // Continue to fallback sample data if we don't have any data
+          if (existing.isEmpty) {
+            debugPrint('No existing data, loading sample data');
+          } else {
+            debugPrint('Keeping existing ${existing.length} surahs, API load failed');
+            return; // Keep existing data, don't load sample
+          }
+        }
+      }
+      
+      // Fallback to sample data
+      debugPrint('Loading sample Quran data');
+      await _loadSampleQuranData();
     } catch (e) {
-      // If file doesn't exist, load sample data
-      debugPrint('Quran JSON not found, loading sample data: $e');
+      debugPrint('Error loading Quran content: $e');
+      // Last resort: load sample data
       await _loadSampleQuranData();
     }
+  }
+  
+  /// Load full Quran from API
+  static Future<void> _loadFullQuranFromAPI(QuranRepository repository) async {
+    await QuranApiLoader.loadFullQuran();
   }
 
   /// Load Azkar content from JSON

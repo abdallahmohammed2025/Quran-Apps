@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran_azkar_app/core/utils/preferences_helper.dart';
 import 'package:quran_azkar_app/features/quran/presentation/pages/surah_list_page.dart';
+import 'package:quran_azkar_app/features/azkar/presentation/pages/azkar_categories_page.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -324,10 +325,7 @@ class _AzkarTab extends StatelessWidget {
   const _AzkarTab();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Azkar')),
-      body: const Center(child: Text('Azkar Tab - Coming Soon')),
-    );
+    return const AzkarCategoriesPage();
   }
 }
 

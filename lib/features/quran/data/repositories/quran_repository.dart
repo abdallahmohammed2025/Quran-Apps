@@ -1,4 +1,6 @@
 import 'package:quran_azkar_app/core/database/database_interface.dart';
+import 'package:quran_azkar_app/features/quran/data/surah_metadata.dart';
+import 'package:quran_azkar_app/features/quran/data/surah_names.dart';
 import 'package:quran_azkar_app/shared/models/quran_models.dart';
 
 abstract class QuranRepository {
@@ -63,28 +65,37 @@ class QuranRepositoryImpl implements QuranRepository {
 
   @override
   Future<List<Surah>> getAllSurahs() async {
-    // This would typically come from a separate surahs table
-    // For now, we'll query distinct surahs from quran_text
-    final maps = await _database.rawQuery('''
-      SELECT DISTINCT 
-        surah_number,
-        COUNT(*) as ayah_count
-      FROM quran_text
-      GROUP BY surah_number
-      ORDER BY surah_number ASC
-    ''');
+    // Query all ayahs and group by surah_number in Dart
+    // This works on both SQLite and Web database
+    final maps = await _database.query(
+      'quran_text',
+      columns: ['surah_number'],
+      orderBy: 'surah_number ASC',
+    );
     
-    // This is a simplified version - in production, you'd have a surahs table
-    // with names, transliterations, etc.
-    return maps.map((map) {
+    // Count ayahs per surah
+    final surahCounts = <int, int>{};
+    for (final map in maps) {
+      final surahNumber = (map['surah_number'] as num?)?.toInt();
+      if (surahNumber != null) {
+        surahCounts[surahNumber] = (surahCounts[surahNumber] ?? 0) + 1;
+      }
+    }
+    
+    // Build Surah list
+    return surahCounts.entries.map((entry) {
+      final surahNumber = entry.key;
+      final ayahCount = entry.value;
+      
       return Surah(
-        number: map['surah_number'] as int,
-        nameArabic: _getSurahNameArabic(map['surah_number'] as int),
-        nameTransliterated: _getSurahNameTransliterated(map['surah_number'] as int),
-        nameEnglish: _getSurahNameEnglish(map['surah_number'] as int),
-        ayahCount: map['ayah_count'] as int,
+        number: surahNumber,
+        nameArabic: SurahNames.getArabic(surahNumber),
+        nameTransliterated: SurahNames.getTransliterated(surahNumber),
+        nameEnglish: SurahNames.getEnglish(surahNumber),
+        ayahCount: ayahCount,
+        meccan: SurahMetadata.isMeccan(surahNumber),
       );
-    }).toList();
+    }).toList()..sort((a, b) => a.number.compareTo(b.number));
   }
 
   @override
@@ -106,36 +117,5 @@ class QuranRepositoryImpl implements QuranRepository {
     );
   }
 
-  // Helper methods for surah names (simplified - should come from database)
-  String _getSurahNameArabic(int surahNumber) {
-    // This should be loaded from database or assets
-    const names = {
-      1: 'الفاتحة',
-      2: 'البقرة',
-      3: 'آل عمران',
-      // ... add all 114 surahs
-    };
-    return names[surahNumber] ?? 'Surah $surahNumber';
-  }
-
-  String _getSurahNameTransliterated(int surahNumber) {
-    const names = {
-      1: 'Al-Fatiha',
-      2: 'Al-Baqarah',
-      3: 'Ali Imran',
-      // ... add all 114 surahs
-    };
-    return names[surahNumber] ?? 'Surah $surahNumber';
-  }
-
-  String _getSurahNameEnglish(int surahNumber) {
-    const names = {
-      1: 'The Opening',
-      2: 'The Cow',
-      3: 'Family of Imran',
-      // ... add all 114 surahs
-    };
-    return names[surahNumber] ?? 'Surah $surahNumber';
-  }
 }
 
