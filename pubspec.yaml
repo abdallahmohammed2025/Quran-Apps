@@ -26,7 +26,7 @@ dependencies:
   connectivity_plus: ^5.0.2
 
   # Audio
-  just_audio: ^0.9.36
+  just_audio: ^0.10.5
   audio_service: ^0.18.10
   # Note: audio_service may have limited web support
 
