@@ -31,7 +31,7 @@ dependencies:
   # Note: audio_service may have limited web support
 
   # Notifications
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^18.0.1
   timezone: ^0.9.2
   # Note: notifications have limited web support
 
